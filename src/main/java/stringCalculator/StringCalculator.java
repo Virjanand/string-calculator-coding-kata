@@ -1,6 +1,7 @@
 package stringCalculator;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public class StringCalculator {
     public String add(String numbers) {
@@ -8,9 +9,9 @@ public class StringCalculator {
             return "0";
         }
         String[] addends = numbers.split(",");
-        int sum = Arrays.stream(addends)
-                .mapToInt(Integer::parseInt)
+        double sum = Arrays.stream(addends)
+                .mapToDouble(Double::parseDouble)
                 .sum();
-        return Integer.toString(sum);
+        return String.format(Locale.ENGLISH,"%.1f", sum);
     }
 }

@@ -19,8 +19,9 @@ public class StringCalculatorTest {
     @ParameterizedTest(name = "{2}")
     @CsvSource({
             "'',0, empty string -> 0",
-            "1, 1, number -> number",
-            "'1,2', 3, 2 numbers -> sum"
+            "1, 1.0, integer -> integer",
+            "'1,2', 3.0, 2 integers -> sum",
+            "'1.1,2.2', 3.3, 2 doubles -> sum"
     })
     void canAdd(String addends, String sum, String description) {
         assertThat(stringCalculator.add(addends)).isEqualTo(sum);
