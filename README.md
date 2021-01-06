@@ -10,19 +10,21 @@ An empty string will return “0”.
 Example of inputs: "", "1", "1.1,2.2".
 
 ## Many numbers
-Allow the add method to handle an unknow number of arguments.
+Allow the add method to handle an unknown number of arguments.
 
 ## Newline as separator
 Allow the add method to handle newlines as separators:
 
 "1\n2,3" should return "6".
+
 "175.2,\n35" is invalid and should return the message "Number expected but '\n' found at position 6."
-Missing number in last position
+
+## Missing number in last position
 Don’t allow the input to end in a separator.
 
 "1,3," is invalid and should return the message Number expected but EOF found.
 
-Custom separators
+## Custom separators
 Allow the add method to handle a different delimiter. To change the delimiter, the beginning of the input will contain a separate line that looks like this:
 
 //[delimiter]\n[numbers]
