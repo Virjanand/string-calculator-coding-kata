@@ -3,7 +3,6 @@ package stringCalculator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -20,6 +19,6 @@ public class StringCalculator {
     }
 
     private String buildSeparatorRegex(final List<String> separators) {
-        return separators.stream().collect(Collectors.joining("|"));
+        return String.join("|", separators);
     }
 }
