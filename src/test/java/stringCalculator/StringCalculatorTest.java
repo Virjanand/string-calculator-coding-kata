@@ -1,6 +1,7 @@
 package stringCalculator;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -23,9 +24,14 @@ public class StringCalculatorTest {
             "'1,2', 3.0, 2 integers -> sum",
             "'1.1,2.2', 3.3, 2 doubles -> sum",
             "'1,2,3', 6.0, unknown number of arguments",
-            "'1\n2,3', 6.0, newline as separator"
+            "'1\n2,3', 6.0, newline as separator",
     })
     void canAdd(String addends, String sum, String description) {
         assertThat(stringCalculator.add(addends)).isEqualTo(sum);
+    }
+
+    @Test
+    void returnErrorMessageForInvalidInputAdd() {
+        assertThat(stringCalculator.add("175.2,\n35")).isEqualTo("Number expected but '\\n' found at position 6.");
     }
 }
