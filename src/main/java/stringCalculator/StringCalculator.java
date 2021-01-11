@@ -13,6 +13,11 @@ public class StringCalculator {
         if (numbers.isEmpty()) {
             return "0";
         }
+
+        if (numbers.endsWith(",")) {
+            return "Number expected but EOF found";
+        }
+
         String[] addends = numbers.split(buildSeparatorRegex(asList(",", "\n")));
 
         if (isNumberMissingInInput(addends)) {
