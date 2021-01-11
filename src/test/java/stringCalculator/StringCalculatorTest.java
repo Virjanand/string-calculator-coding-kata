@@ -31,7 +31,12 @@ public class StringCalculatorTest {
     }
 
     @Test
-    void returnErrorMessageForInvalidInputAdd() {
+    void returnErrorMessageForTwoSequentialSeparatorsWhenAdding() {
         assertThat(stringCalculator.add("175.2,\n35")).isEqualTo("Number expected but '\\n' found at position 6.");
+    }
+
+    @Test
+    void returnErrorMessageForTrailingSeparatorsWhenAdding() {
+        assertThat(stringCalculator.add("1,3,")).isEqualTo("Number expected but EOF found");
     }
 }
