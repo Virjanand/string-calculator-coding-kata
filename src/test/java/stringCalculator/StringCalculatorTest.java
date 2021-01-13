@@ -30,9 +30,13 @@ public class StringCalculatorTest {
         assertThat(stringCalculator.add(addends)).isEqualTo(sum);
     }
 
-    @Test
-    void returnErrorMessageForTwoSequentialSeparatorsWhenAdding() {
-        assertThat(stringCalculator.add("175.2,\n35")).isEqualTo("Number expected but '\\n' found at position 6.");
+    @ParameterizedTest
+    @CsvSource({
+            "'175.2,\n35', '\\n'",
+            "'175.2\n,35', ','",
+    })
+    void returnErrorMessageForTwoSequentialSeparatorsWhenAdding(String addends, final String separator) {
+        assertThat(stringCalculator.add(addends)).isEqualTo("Number expected but '" + separator + "' found at position 6.");
     }
 
     @Test

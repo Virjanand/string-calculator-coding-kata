@@ -3,8 +3,6 @@ package stringCalculator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 
@@ -17,10 +15,12 @@ public class StringCalculator {
             return "0";
         }
 
-        String[] addends = numbers.split(buildSeparatorRegex(SEPARATORS));
+        String[] addends = numbers.split(buildSeparatorRegex());
 
-        String x = validateNumbers(numbers);
-        if (x != null) return x;
+        String validationMessage = validateNumbers(numbers);
+        if (validationMessage != null) {
+            return validationMessage;
+        }
 
         double sum = Arrays.stream(addends)
                 .mapToDouble(Double::parseDouble)
@@ -29,22 +29,33 @@ public class StringCalculator {
     }
 
     private String validateNumbers(String numbers) {
-        if (nubmersEndsWithSeparator(numbers)) {
+        if (numbersEndsWithSeparator(numbers)) {
             return "Number expected but EOF found";
         }
-        Pattern p = Pattern.compile(",\n");
-        Matcher m = p.matcher(numbers);
-        if (m.find()) {
-            return "Number expected but '\\n' found at position " + (m.start() + 1) + ".";
+        for (String separator : SEPARATORS) {
+            int indexAfterSeparator = 0;
+            int separatorIndex = numbers.indexOf(separator, indexAfterSeparator);
+            while (separatorIndex != -1) {
+                indexAfterSeparator = separatorIndex + 1;
+                String characterAfterSeparator = String.valueOf(numbers.charAt(indexAfterSeparator));
+                if (SEPARATORS.contains(characterAfterSeparator)) {
+                    return "Number expected but '"
+                            + characterAfterSeparator.replace("\n", "\\n")
+                            + "' found at position "
+                            + (indexAfterSeparator)
+                            + ".";
+                }
+                separatorIndex = numbers.indexOf(separator, indexAfterSeparator);
+            }
         }
         return null;
     }
 
-    private boolean nubmersEndsWithSeparator(String numbers) {
+    private boolean numbersEndsWithSeparator(String numbers) {
         return SEPARATORS.stream().anyMatch(numbers::endsWith);
     }
 
-    private String buildSeparatorRegex(final List<String> separators) {
-        return String.join("|", separators);
+    private String buildSeparatorRegex() {
+        return String.join("|", StringCalculator.SEPARATORS);
     }
 }
