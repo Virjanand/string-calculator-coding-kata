@@ -1,7 +1,6 @@
 package stringCalculator;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -30,7 +29,7 @@ public class StringCalculatorTest {
         assertThat(stringCalculator.add(addends)).isEqualTo(sum);
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "{1} after another separator.")
     @CsvSource({
             "'175.2,\n35', '\\n'",
             "'175.2\n,35', ','",
@@ -39,8 +38,12 @@ public class StringCalculatorTest {
         assertThat(stringCalculator.add(addends)).isEqualTo("Number expected but '" + separator + "' found at position 6.");
     }
 
-    @Test
-    void returnErrorMessageForTrailingSeparatorsWhenAdding() {
-        assertThat(stringCalculator.add("1,3,")).isEqualTo("Number expected but EOF found");
+    @ParameterizedTest(name = "{1}")
+    @CsvSource({
+            "'1,3,', 'End in ,'",
+            "'1\n3\n', 'End in \\n'",
+    })
+    void returnErrorMessageForTrailingSeparatorsWhenAdding(String numbers, String description) {
+        assertThat(stringCalculator.add(numbers)).isEqualTo("Number expected but EOF found");
     }
 }
