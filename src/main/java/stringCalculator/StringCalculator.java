@@ -29,14 +29,18 @@ public class StringCalculator {
     }
 
     private String validateNumbers(String numbers) {
-        if (numbersEndsWithSeparator(numbers)) {
+        if (numbersEndWithSeparator(numbers)) {
             return "Number expected but EOF found";
         }
+        return validateNumbersDoNotContain2ConsecutiveSeparators(numbers);
+    }
+
+    private String validateNumbersDoNotContain2ConsecutiveSeparators(String numbers) {
         for (String separator : SEPARATORS) {
             int indexAfterSeparator = 0;
-            int separatorIndex = numbers.indexOf(separator, indexAfterSeparator);
-            while (separatorIndex != -1) {
-                indexAfterSeparator = separatorIndex + 1;
+            int indexOfSeparator = numbers.indexOf(separator, indexAfterSeparator);
+            while (indexOfSeparator != -1) {
+                indexAfterSeparator = indexOfSeparator + 1;
                 String characterAfterSeparator = String.valueOf(numbers.charAt(indexAfterSeparator));
                 if (SEPARATORS.contains(characterAfterSeparator)) {
                     return "Number expected but '"
@@ -45,13 +49,13 @@ public class StringCalculator {
                             + (indexAfterSeparator)
                             + ".";
                 }
-                separatorIndex = numbers.indexOf(separator, indexAfterSeparator);
+                indexOfSeparator = numbers.indexOf(separator, indexAfterSeparator);
             }
         }
         return null;
     }
 
-    private boolean numbersEndsWithSeparator(String numbers) {
+    private boolean numbersEndWithSeparator(String numbers) {
         return SEPARATORS.stream().anyMatch(numbers::endsWith);
     }
 
