@@ -46,4 +46,12 @@ public class StringCalculatorTest {
     void returnErrorMessageForTrailingSeparatorsWhenAdding(String numbers, String description) {
         assertThat(stringCalculator.add(numbers)).isEqualTo("Number expected but EOF found");
     }
+
+    @ParameterizedTest(name = "{2}")
+    @CsvSource({
+            "'//;\n1;2',3.0, semicolon as separator",
+    })
+    void replaceCommaWithCustomSeparator(String addends, String sum, String description) {
+        assertThat(stringCalculator.add(addends)).isEqualTo(sum);
+    }
 }
