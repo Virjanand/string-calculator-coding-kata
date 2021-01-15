@@ -11,21 +11,16 @@ public class StringCalculator {
     public static final List<String> SEPARATORS = asList(";", ",", "\n");
 
     public String add(String numbers) {
-        if (numbers.isEmpty()) {
-            return "0";
-        }
-
         if (numbers.startsWith("//")) {
             numbers = numbers.substring(4);
         }
-
-        String[] addends = numbers.split(buildSeparatorRegex());
 
         String validationMessage = validateNumbers(numbers);
         if (validationMessage != null) {
             return validationMessage;
         }
 
+        String[] addends = numbers.split(buildSeparatorRegex());
 
         double sum = Arrays.stream(addends)
                 .mapToDouble(Double::parseDouble)
@@ -34,6 +29,9 @@ public class StringCalculator {
     }
 
     private String validateNumbers(String numbers) {
+        if (numbers.isEmpty()) {
+            return "0";
+        }
         if (numbersEndWithSeparator(numbers)) {
             return "Number expected but EOF found";
         }
