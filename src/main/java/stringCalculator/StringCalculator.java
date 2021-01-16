@@ -1,19 +1,29 @@
 package stringCalculator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import static java.util.Arrays.asList;
-
 public class StringCalculator {
 
-    public static final List<String> SEPARATORS = asList(";", ",", "\n");
+    public final List<String> SEPARATORS;
+
+    public StringCalculator() {
+        SEPARATORS = populateSeparators();
+    }
+
+    private List<String> populateSeparators() {
+
+        List<String> separators = new ArrayList<>();
+        separators.add("\n");
+        separators.add(",");
+
+        return separators;
+    }
 
     public String add(String numbers) {
-        if (numbers.startsWith("//")) {
-            numbers = numbers.substring(4);
-        }
+        numbers = parseCustomSeparator(numbers);
 
         String validationMessage = validateNumbers(numbers);
         if (validationMessage != null) {
@@ -26,6 +36,15 @@ public class StringCalculator {
                 .mapToDouble(Double::parseDouble)
                 .sum();
         return String.format(Locale.ENGLISH, "%.1f", sum);
+    }
+
+    private String parseCustomSeparator(String numbers) {
+        if (numbers.startsWith("//")) {
+            SEPARATORS.remove(",");
+            SEPARATORS.add(String.valueOf(numbers.charAt(2)));
+            numbers = numbers.substring(4);
+        }
+        return numbers;
     }
 
     private String validateNumbers(String numbers) {
@@ -63,6 +82,6 @@ public class StringCalculator {
     }
 
     private String buildSeparatorRegex() {
-        return String.join("|", StringCalculator.SEPARATORS);
+        return String.join("|", SEPARATORS);
     }
 }
