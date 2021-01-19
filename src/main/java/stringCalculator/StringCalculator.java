@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class StringCalculator {
 
     public final List<String> SEPARATORS;
 
     public StringCalculator() {
-        SEPARATORS = populateSeparators();
+        SEPARATORS = initialSeparators();
     }
 
-    private List<String> populateSeparators() {
+    private List<String> initialSeparators() {
 
         List<String> separators = new ArrayList<>();
         separators.add("\n");
@@ -68,7 +69,7 @@ public class StringCalculator {
                     return "Number expected but '"
                             + characterAfterSeparator.replace("\n", "\\n")
                             + "' found at position "
-                            + (indexAfterSeparator)
+                            + indexAfterSeparator
                             + ".";
                 }
                 indexOfSeparator = numbers.indexOf(separator, indexAfterSeparator);
@@ -82,6 +83,8 @@ public class StringCalculator {
     }
 
     private String buildSeparatorRegex() {
-        return String.join("|", SEPARATORS);
+        return SEPARATORS.stream()
+                .map(s -> s.replaceFirst("\\|", "\\\\|"))
+                .collect(Collectors.joining("|"));
     }
 }

@@ -50,6 +50,7 @@ public class StringCalculatorTest {
     @ParameterizedTest(name = "{2}")
     @CsvSource({
             "'//;\n1;2',3.0, semicolon as separator",
+            "'//|\n1|2|3',6.0, pipe as separator",
     })
     void replaceCommaWithCustomSeparator(String addends, String sum, String description) {
         assertThat(stringCalculator.add(addends)).isEqualTo(sum);
