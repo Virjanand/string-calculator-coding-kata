@@ -42,8 +42,9 @@ public class StringCalculator {
     private String parseCustomSeparator(String numbers) {
         if (numbers.startsWith("//")) {
             SEPARATORS.remove(",");
-            SEPARATORS.add(String.valueOf(numbers.charAt(2)));
-            numbers = numbers.substring(4);
+            int i = numbers.indexOf("\n");
+            SEPARATORS.add(numbers.substring(2, i));
+            numbers = numbers.substring(i + 1);
         }
         return numbers;
     }
