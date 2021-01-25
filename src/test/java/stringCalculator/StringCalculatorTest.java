@@ -13,7 +13,7 @@ public class StringCalculatorTest {
 
     @BeforeEach
     void createStringCalculator() {
-        stringCalculator = new StringCalculator();
+        stringCalculator = new StringCalculator(new NumberExtractor());
     }
 
     @ParameterizedTest(name = "{2}")
@@ -33,6 +33,7 @@ public class StringCalculatorTest {
     @CsvSource({
             "'175.2,\n35', '\\n'",
             "'175.2\n,35', ','",
+            "'//|\n175.2\n|35', '|'",
     })
     void returnErrorMessageForTwoSequentialSeparatorsWhenAdding(String addends, final String separator) {
         assertThat(stringCalculator.add(addends)).isEqualTo("Number expected but '" + separator + "' found at position 6.");
